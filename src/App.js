@@ -27,6 +27,8 @@ const initialState = {
 };
 
 function reducer(state, action) {
+  if (!state.isActive && action.type !== "openAccount") return state;
+
   switch (action.type) {
     case "openAccount":
       return { ...state, isActive: true, balance: action.payload };
@@ -36,7 +38,7 @@ function reducer(state, action) {
       return { ...state, balance: state.balance - action.payload };
     case "requestLoan":
       if (state.isLoan) {
-        return { ...state };
+        return state;
       }
 
       return {
@@ -49,9 +51,9 @@ function reducer(state, action) {
       return { ...state, loan: 0, balance: state.balance - state.loan };
     case "closeAccount":
       if (state.balance === 0 && state.loan === 0) {
-        return { ...initialState };
+        return initialState;
       }
-      return { ...state };
+      return state;
 
     default:
       throw new Error("Action unknow");
