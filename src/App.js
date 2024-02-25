@@ -29,11 +29,11 @@ const initialState = {
 function reducer(state, action) {
   switch (action.type) {
     case "openAccount":
-      return { ...state, isActive: true, balance: 500 };
+      return { ...state, isActive: true, balance: action.payload };
     case "deposit":
-      return { ...state, balance: state.balance + 150 };
+      return { ...state, balance: state.balance + action.payload };
     case "withdraw":
-      return { ...state, balance: state.balance - 50 };
+      return { ...state, balance: state.balance - action.payload };
     case "requestLoan":
       if (state.isLoan) {
         return { ...state };
@@ -41,8 +41,8 @@ function reducer(state, action) {
 
       return {
         ...state,
-        loan: 5000,
-        balance: state.balance + 5000,
+        loan: action.payload,
+        balance: state.balance + action.payload,
         isLoan: true,
       };
     case "payLoan":
@@ -73,7 +73,7 @@ export default function App() {
       <p>
         <button
           onClick={() => {
-            dispatch({ type: "openAccount" });
+            dispatch({ type: "openAccount", payload: 500 });
           }}
           disabled={isActive}
         >
@@ -84,7 +84,7 @@ export default function App() {
       <p>
         <button
           onClick={() => {
-            dispatch({ type: "deposit" });
+            dispatch({ type: "deposit", payload: 150 });
           }}
           disabled={!isActive}
         >
@@ -94,7 +94,7 @@ export default function App() {
       <p>
         <button
           onClick={() => {
-            dispatch({ type: "withdraw" });
+            dispatch({ type: "withdraw", payload: 50 });
           }}
           disabled={!isActive}
         >
@@ -104,7 +104,7 @@ export default function App() {
       <p>
         <button
           onClick={() => {
-            dispatch({ type: "requestLoan" });
+            dispatch({ type: "requestLoan", payload: 5000 });
           }}
           disabled={!isActive}
         >
